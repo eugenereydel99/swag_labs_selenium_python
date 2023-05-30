@@ -25,7 +25,6 @@ class BasePage:
     def is_element_clickable(self, how, what) -> WebElement:
         return wait(self.driver, 10).until(
             ec.element_to_be_clickable((how, what))
-
         )
 
     def is_element_not_visible(self, how, what) -> WebElement:

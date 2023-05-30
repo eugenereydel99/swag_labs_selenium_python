@@ -1,4 +1,7 @@
+import random
+
 import allure
+from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import Select
 
 from pages.base_page import BasePage
@@ -7,6 +10,35 @@ from utils.locators import ProductsPageLocators
 
 
 class ProductsPage(BasePage):
+    @allure.step(title="Добавление товаров в корзину")
+    def add_products_to_cart(self):
+        self.should_be_products_page()
+        # получаем список товаров (кнопок 'Добавить')
+        products_list: list[WebElement] = self.are_elements_visible(
+            *ProductsPageLocators.PRODUCTS_ADD_TO_CART_BUTTONS
+        )
+
+        random_products: list[WebElement] = random.choices(
+            products_list,
+            k=random.choice(
+                [i for i in range(1, len(products_list))]
+            )
+        )
+
+        print(f"Количество выбранных товаров: {len(random_products)}")
+        for product in random_products:
+            product.click()
+
+        with allure.step(title="Проверка количества добавленных товаров через бадж у значка 'Корзина'"):
+            # проверяем, что количество товаров в бадже такое же, сколько товаров было кликнуто
+            added_products_buttons = len(self.are_elements_visible(
+                *ProductsPageLocators.PRODUCTS_REMOVE_FROM_CART_BUTTONS
+            ))
+            products_quantity_in_badge = int(self.is_element_visible(
+                *ProductsPageLocators.SHOPPING_CART_BADGE
+            ).text)
+
+            assert added_products_buttons == products_quantity_in_badge
 
     @allure.step(title="Представление товаров в зависимости от типа сортировки")
     def sort_list_of_products(self, sort_type: SortingType):
@@ -51,6 +83,12 @@ class ProductsPage(BasePage):
                     is_reverse=True
                 )
 
+    @allure.step(title="Проверка нахождения на странице с товарами")
+    def should_be_products_page(self):
+        self.__should_be_products_page_link()
+        self.__should_be_products_title()
+        self.__should_be_products_list()
+
     def __select_filter_value_and_compare_lists(
             self,
             *locator,
@@ -70,12 +108,6 @@ class ProductsPage(BasePage):
             )
         sorted_list = sorted(original_list, reverse=is_reverse)
         assert original_list == sorted_list
-
-    @allure.step(title="Проверка нахождения на странице с товарами")
-    def should_be_products_page(self):
-        self.__should_be_products_page_link()
-        self.__should_be_products_title()
-        self.__should_be_products_list()
 
     @allure.step(title="Проверка нахождения в поисковой строке html-страницы с товарами")
     def __should_be_products_page_link(self):

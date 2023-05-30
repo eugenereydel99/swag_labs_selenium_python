@@ -13,15 +13,12 @@ class LoginPageLocators:
 class ProductsPageLocators:
     PRODUCTS_TITLE = (By.CLASS_NAME, "title")
     PRODUCTS_LIST = (By.CLASS_NAME, "inventory_list")
+    PRODUCTS_ADD_TO_CART_BUTTONS = (By.XPATH, "//button[contains(@data-test, 'add-to-cart')]")
+    PRODUCTS_REMOVE_FROM_CART_BUTTONS = (By.XPATH, "//button[contains(@data-test, 'remove')]")
 
     # Для сортировки
     PRODUCTS_LIST_FILTER = (By.CSS_SELECTOR, "select.product_sort_container")
     PRODUCTS_LIST_TITLE = (By.CSS_SELECTOR, ".inventory_list .inventory_item_name")
     PRODUCTS_LIST_PRICE = (By.CSS_SELECTOR, ".inventory_list .inventory_item_price")
 
-
-# class SortingTypeLocators:
-#     ALPHABETICAL_ORDER_BY_ASC = (By.XPATH, "//select[@data-test='product_sort_container']/option[@value='az']")
-#     ALPHABETICAL_ORDER_BY_DESC = (By.XPATH, "//select[@data-test='product_sort_container']/option[@value='za']")
-#     PRICE_ORDER_BY_ASC = (By.XPATH, "//select[@data-test='product_sort_container']/option[@value='lohi']")
-#     PRICE_ORDER_BY_DESC = (By.XPATH, "//select[@data-test='product_sort_container']/option[@value='hilo']")
+    SHOPPING_CART_BADGE = (By.CLASS_NAME, "shopping_cart_badge")
