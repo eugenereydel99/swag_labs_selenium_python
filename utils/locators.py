@@ -14,9 +14,14 @@ class ProductsPageLocators:
     PRODUCTS_TITLE = (By.CLASS_NAME, "title")
     PRODUCTS_LIST = (By.CLASS_NAME, "inventory_list")
 
+    # Для сортировки
+    PRODUCTS_LIST_FILTER = (By.CSS_SELECTOR, "select.product_sort_container")
+    PRODUCTS_LIST_TITLE = (By.CSS_SELECTOR, ".inventory_list .inventory_item_name")
+    PRODUCTS_LIST_PRICE = (By.CSS_SELECTOR, ".inventory_list .inventory_item_price")
 
-class SortingTypeLocators:
-    ALPHABETICAL_ORDER_BY_ASC = (By.XPATH, "//select[@data-test='product_sort_container']/option[@value='az']")
-    ALPHABETICAL_ORDER_BY_DESC = (By.XPATH, "//select[@data-test='product_sort_container']/option[@value='za']")
-    PRICE_ORDER_BY_ASC = (By.XPATH, "//select[@data-test='product_sort_container']/option[@value='lohi']")
-    PRICE_ORDER_BY_DESC = (By.XPATH, "//select[@data-test='product_sort_container']/option[@value='hilo']")
+
+# class SortingTypeLocators:
+#     ALPHABETICAL_ORDER_BY_ASC = (By.XPATH, "//select[@data-test='product_sort_container']/option[@value='az']")
+#     ALPHABETICAL_ORDER_BY_DESC = (By.XPATH, "//select[@data-test='product_sort_container']/option[@value='za']")
+#     PRICE_ORDER_BY_ASC = (By.XPATH, "//select[@data-test='product_sort_container']/option[@value='lohi']")
+#     PRICE_ORDER_BY_DESC = (By.XPATH, "//select[@data-test='product_sort_container']/option[@value='hilo']")

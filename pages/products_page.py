@@ -1,10 +1,76 @@
 import allure
+from selenium.webdriver.support.ui import Select
 
 from pages.base_page import BasePage
+from utils.constants import SortingType
 from utils.locators import ProductsPageLocators
 
 
 class ProductsPage(BasePage):
+
+    @allure.step(title="Представление товаров в зависимости от типа сортировки")
+    def sort_list_of_products(self, sort_type: SortingType):
+        self.should_be_products_page()
+        products_filter = Select(
+            self.is_element_visible(*ProductsPageLocators.PRODUCTS_LIST_FILTER)
+        )
+        match sort_type:
+            case SortingType.ALPHABETICAL_ORDER_BY_ASC as a_to_z:
+                self.__select_filter_value_and_compare_lists(
+                    *ProductsPageLocators.PRODUCTS_LIST_TITLE,
+                    select=products_filter,
+                    filter_value=a_to_z.value,
+                    is_price_filter=False,
+                    is_reverse=False
+                )
+
+            case SortingType.ALPHABETICAL_ORDER_BY_DESC as z_to_a:
+                self.__select_filter_value_and_compare_lists(
+                    *ProductsPageLocators.PRODUCTS_LIST_TITLE,
+                    select=products_filter,
+                    filter_value=z_to_a.value,
+                    is_price_filter=False,
+                    is_reverse=True
+                )
+
+            case SortingType.PRICE_ORDER_BY_ASC as low_to_high_price:
+                self.__select_filter_value_and_compare_lists(
+                    *ProductsPageLocators.PRODUCTS_LIST_PRICE,
+                    select=products_filter,
+                    filter_value=low_to_high_price.value,
+                    is_price_filter=True,
+                    is_reverse=False
+                )
+
+            case SortingType.ALPHABETICAL_ORDER_BY_DESC as high_to_low_price:
+                self.__select_filter_value_and_compare_lists(
+                    *ProductsPageLocators.PRODUCTS_LIST_PRICE,
+                    select=products_filter,
+                    filter_value=high_to_low_price.value,
+                    is_price_filter=True,
+                    is_reverse=True
+                )
+
+    def __select_filter_value_and_compare_lists(
+            self,
+            *locator,
+            select: Select,
+            filter_value: str,
+            is_price_filter: bool,
+            is_reverse: bool = True
+    ) -> None:
+        select.select_by_value(filter_value)
+        if is_price_filter:
+            original_list = list(
+                map(lambda x: float(x.text.removeprefix('$')), self.are_elements_visible(*locator))
+            )
+        else:
+            original_list = list(
+                map(lambda x: x.text, self.are_elements_visible(*locator))
+            )
+        sorted_list = sorted(original_list, reverse=is_reverse)
+        assert original_list == sorted_list
+
     @allure.step(title="Проверка нахождения на странице с товарами")
     def should_be_products_page(self):
         self.__should_be_products_page_link()

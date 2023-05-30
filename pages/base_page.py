@@ -22,11 +22,6 @@ class BasePage:
             ec.visibility_of_all_elements_located((how, what))
         )
 
-    def are_elements_present(self, how, what) -> WebElement:
-        return wait(self.driver, 10).until(
-            ec.presence_of_all_elements_located((how, what))
-        )
-
     def is_element_clickable(self, how, what) -> WebElement:
         return wait(self.driver, 10).until(
             ec.element_to_be_clickable((how, what))

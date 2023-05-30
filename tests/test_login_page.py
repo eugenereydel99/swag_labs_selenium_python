@@ -115,7 +115,6 @@ class TestLoginForm:
         login_page.should_be_username_and_password_doesnt_match_error_message()
 
     @pytest.mark.positive
-    @pytest.mark.flaky
     @allure.title(
         test_title="Поле 'логин' валидное заполненное и поле 'пароль' валидное заполненное"
     )
